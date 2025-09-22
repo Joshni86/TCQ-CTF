@@ -1,7 +1,39 @@
 # Finding flag-1
-The CTF machine produced by the .ova was inaccesssible due to unknown login credentials
+The CTF machine produced by the .ova was inaccesssible due to unknown login credentials.\
+**NOTE:** Make sure both attacker and target VM is in Bridged Network mode.
 
 # Finding IP/website 
+On our attacker (Kali) VM we run ```ip a``` to determine the attack interface/address:
+
+```
+$ ip a
+2: eth0: ...
+    inet 192.168.29.173/24 brd 192.168.29.255 scope global dynamic noprefixroute eth0
+```
+
+Our Kali IP is **192.168.29.173.**
+
+We scan the subnet to find other hosts:\
+```sudo netdiscover -r 192.168.29.0/24```
+
+From the output we observed:
+- ```08:00:27``` is a VirtualBox NIC.
+- Host **192.168.29.28** with MAC ```08:00:27:4f:d9:a5``` is the CTF VM.
+
+We run nmap to enumerate services on the target:\
+```nmap -sC -sV 192.168.29.28```
+
+Key results:
+- ```22/tcp``` - OpenSSH 9.2p1 (Debian)
+- ```5000/tcp``` - HTTP (Werkzeug httpd 3.1.3) — page title: **R&D Portal**
+
+We visited:\
+```http://192.168.29.28:5000```
+
+We also ran a directory scan:\
+```gobuster dir -u http://192.168.29.28:5000 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt```
+
+That revealed a ```/pages``` route.
 
 # Reverse Shell
 The website had an input field which was vulnerable to SSTI (server-side template Injection).
