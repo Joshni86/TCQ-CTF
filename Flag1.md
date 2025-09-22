@@ -31,7 +31,15 @@ python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 Then,we used the command ```ls``` to list all files in directory which gave...
+```
+www-data@ctf-machine:/opt/ssti-lab$ ls
+app.py  F14@_0n3.txt  static  wget-log
+```
 
-And the command ```cat f14@_@n3.txt``` gave the flag
+And the command ```cat F14@_0n3.txt``` gave the flag
+```
+www-data@ctf-machine:/opt/ssti-lab$ cat F14@_0n3.txt
+FLAG -> S3Cur1ty_Br3@k_P@55ed
+```
 
-```flag: TCQ2025{S3Cur1ty_Br3@k_P@55ed}```
+```Flag: TCQ2025{S3Cur1ty_Br3@k_P@55ed}```
